@@ -1,0 +1,38 @@
+---
+#
+# Task for testing
+#
+#
+
+- name: Touch postgres password script file
+  file:
+    path: "{{postgres.home}}/set_postgres_password.sql"
+    state: touch
+    owner: "{{postgres.user_name}}"
+    group: "{{postgres.group_name}}"
+  become: true
+  become_method: sudo
+  tags:
+    - install_postgres
+
+- name: Prepare postgres password script
+  lineinfile:
+    path: "{{postgres.home}}/set_postgres_password.sql"
+    line: "ALTER USER {{postgres.user_name}} with encrypted password '{{postgres.password}}';"
+    insertafter: EOF
+  become: true
+  become_method: sudo
+  tags:
+    - install_postgres
+
+- name: Configure postgres password
+  shell: |
+    source "{{postgres.home}}/.bash_profile" ;
+    "{{postgres.bin_home}}/bin/psql" -f "{{postgres.home}}/set_postgres_password.sql"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{postgres.user_name}}"
+  tags:
+    - install_postgres
+

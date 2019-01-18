@@ -6,6 +6,7 @@ To setup specific version of PostgreSQL, edit vars/pg.yml
 
 # Run
 To run playbook follow these steps:
+* Update vars/pg.yml for environment specific changes
 * Update /etc/ansible/hosts for static inventory
 * For AWS dynamic inventory, ensure ec2.py, ec2.ini variables are set
 * Run the command for static inventory

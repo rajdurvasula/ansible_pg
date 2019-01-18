@@ -1,0 +1,26 @@
+---
+#
+# Playbook to install PostgreSQL
+#
+#
+
+- name: Playbook to install PostgreSQL
+  hosts: "{{variable_host}}"
+  vars_files:
+    - vars/pg.yml
+  
+  pre_tasks:
+    - name: Update OS packages
+      yum:
+        name: "*"
+        state: latest
+        skip_broken: yes
+      become: true
+      become_method: sudo
+      ignore_errors: yes
+
+
+  roles:
+#    - { role: install_postgres, }
+    - { role: test, }
+
